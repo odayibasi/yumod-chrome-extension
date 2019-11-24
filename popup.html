@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="css/popup.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
+        rel="stylesheet">
+    <script id="story-template" type="text/template">
+        <table cellpadding="0" cellspacing="0">
+            {{#stories}}
+            <tr>
+                <td><a href={{sUrl}} class="storyFolder-menu listItem" target="_blank">{{sTitle}}</a></td>
+                <td><span>{{sTotalClaps}} Claps</span>
+                    <br>{{sPublishedDate}}</td>    
+            </tr>
+            {{/stories}}
+        </table>
+    </script>
+
+    <script id="story-diff-template" type="text/template">
+        <table cellpadding="0" cellspacing="0">
+            {{#stories}}
+            <tr>
+                <td><span class="storyFolder-menu listItem">{{sTitle}}</span></td>
+                <td><span>{{sDiff}} More</span>
+                    <br>{{sPublishedDate}}</td>    
+            </tr>
+            {{/stories}}
+        </table>
+    </script>
+
+
+    <script id="user-template" type="text/template">
+        <table cellpadding="0" cellspacing="0">
+            {{#users}}
+            <tr>
+                <td>
+                    <a href={{uUrl}} class="userFolder-menu listItem" target="_blank">{{uName}}</a>
+                    <div class='user-bio'>{{uBio}}</div>
+                </td>
+                <td><span>{{uUserName}}</span>
+                    <br>{{uCreatedAtDate}}</td>
+            </tr>
+            {{/users}}
+        </table>
+    </script>
+
+
+
+</head>
+
+<body>
+    <script src="js/helpers/jquery-3.3.1.min.js"></script>
+    <script src="js/helpers/mustache.min.js"></script>
+    <script src="js/helpers/underscore.min.js"></script>
+    <script src="js/core/ga-extension.js"></script>
+    <script src="js/core/popup.js"></script>
+    <div id="left_menu" class="menu_panel hide">
+        <ul>
+            <li><a id='writerStatsMenu'>Writers Stats</a></li>
+            <li><a id='meStatsMenu'>Me Stats</a></li>
+            <li><a href="https://chrome.google.com/webstore/detail/yumod/kpjkbgdonednmekjdoemegjnlflnfgkd"
+                    target="_blank">Rate Us</a></li>
+        
+        </ul>
+        <div class="motto_box">
+            <h3>WHY WE BUILD YUMOD</h3>
+            <b>OUR PURPOSE</b>
+            <br> We love Medium. We are fan of medium. We want to contribute some good features to this ecosystem. Not
+            only writing or reading. Also we can develop some productivity tools for medium writers and we start yumod
+            :)
+        </div>
+        <div class="menu_box">
+            Do you Know that ? you can <b>edit</b> own Medium account with
+            <a href="http://yumodweb.s3-website-eu-west-1.amazonaws.com" target="_blank">https://yumod.com</a>
+        </div>
+    </div>
+    <div class="header btn_g">
+        <!--<button id="closeExtension">Close</button>-->
+        <button id="menu"></button>
+        <button id="sortStories"></button>
+        <button id="refreshData"></button>
+    </div>
+    <!-- home warning -->
+    <div class="banner"><img src="http://yumodweb.s3-website-eu-west-1.amazonaws.com/landingpage/img/banner2.jpg" />
+    </div>
+    <div id="warningContainer" class="warning">
+        <h2>Please Wait</h2>
+    </div>
+    <!-- home warning -->
+    <div id="userInfoContainer" class="user_ident">
+        <div class="avatar"><img id="avatar" src="" class="avatar-image avatar-image--icon" /></div>
+        <div class="info">
+            <div id="username"></div>
+            <div class='follow-container'>
+                <div>Followers: <b><span id="followersCount"></span></b></div>
+                <div>Followings: <b><span id="followingsCount"></span></b></div>
+            </div>
+            <div class='story-tag-container'>
+                <div>Stories: <b><span class="selected-context" id="storyCount"></span></b></div>           
+            </div>
+        </div>
+    </div>
+    <div id="storySearchContainer" class="btn_g">
+        <input type="text" id="txtSearchStory" class="form-control" placeholder="Search...">
+    </div>
+    <div id="storyContainer"></div>
+</body>
+
+</html>
