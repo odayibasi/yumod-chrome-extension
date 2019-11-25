@@ -1,7 +1,7 @@
 {
     "name": "Yumod",
-    "version": "1.0.8",
-    "description": "Get Medium Writer's Stories",
+    "version": "1.0.9",
+    "description": "Get Medium Writer's Stories and Stats",
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
     "permissions": ["activeTab", "declarativeContent", "storage", "tabs", "https://*/*"],
     "background": {

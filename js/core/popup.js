@@ -57,7 +57,7 @@ $(document).ready(function () {
     })
 
 
-    $("#menu").click(function (e) {
+    $("#menu").click(e => {
         e.preventDefault();
         $("#left_menu").toggleClass("hide");
     })
@@ -107,7 +107,7 @@ let selectedUser;
 let sortingMode = false;
 
 function getUser(jContent) {
-    const {success,payload}=jContent
+    const {success, payload} = jContent
     if (success && payload && payload.references && payload.references.User) {
         const userObj = payload.references.User;
         let user = userObj[Object.keys(userObj)[0]];
@@ -133,11 +133,11 @@ function checkURLToFindAccountName(url, forceReload) {
         url: urlJSON,
         dataType: "text",
         type: 'GET',
-        success: function (html, textStatus, errorThrown) {
+        success: (html, textStatus, errorThrown) => {
 
             try {
-                var content = html.substring(16);
-                var jContent = JSON.parse(content);
+                let content = html.substring(16);
+                let jContent = JSON.parse(content);
                 if (jContent.success && jContent.payload) {
                     const user = getUser(jContent);
                     if (user === undefined || user === null || user.socialStats === undefined) {
@@ -161,7 +161,7 @@ function checkURLToFindAccountName(url, forceReload) {
 
 
         },
-        error: function (html, textStatus, errorThrown) {
+        error: (html, textStatus, errorThrown) => {
             selectedUser = undefined;
             $("#warningContainer").show();
         }
@@ -183,7 +183,7 @@ function isWriterInfoExist(accountName, forceReload) {
             data: {
                 key: key
             }
-        }, function (resp) {
+        }, resp => {
             if (Object.keys(resp.data).length === 0) {
                 checkMediumAccountAndFillModel(accountName)
             } else {
@@ -204,18 +204,20 @@ function writeUserInfo2ChromeStorage(accountName, val) {
 
     const key = accountName + "_" + activeContext;
     chrome.runtime.sendMessage({
-        op: 'persistWriterInfo',
-        data: {
-            key: key,
-            val: val
+            op: 'persistWriterInfo',
+            data: {
+                key: key,
+                val: val
+            }
+        }, resp => {
+            if (resp != undefined && activeContext !== CONTEXT.MeStats) {
+                renderWritersInfos(resp)
+            } else {
+                console.log(JSON.stringify(resp));
+            }
         }
-    }, function (resp) {
-        if (resp != undefined) {
-            renderWritersInfos(resp)
-        } else {
-            console.log(JSON.stringify(resp));
-        }
-    });
+    )
+    ;
 }
 
 
@@ -237,7 +239,7 @@ function renderWritersInfos(resp) {
     let storyTemplate = $('#story-template').html();
     let userTemplate = $('#user-template').html();
     if (sortingMode) {
-        obj.storyModel.stories.sort(function (a, b) {
+        obj.storyModel.stories.sort((a, b) => {
             return b.sTotalClaps - a.sTotalClaps;
         });
     }
@@ -260,7 +262,7 @@ function renderWritersInfos(resp) {
         $("#followersCount").html(selectedUser.socialStats.usersFollowedByCount);
         $("#followingsCount").html(selectedUser.socialStats.usersFollowedCount);
         $("#storyCount").html(storiesCountVal + "");
-        $(".banner").slideUp("default", function () {
+        $(".banner").slideUp("default", () => {
         });
     }
     $('#storyContainer').html(info);
@@ -299,7 +301,7 @@ function renderError() {
 //======================================================================
 function filterStories() {
     let filter = $("#txtSearchStory").val().toUpperCase();
-    $(".listItem").each(function () {
+    $(".listItem").each(el => {
         if ($(this).text().toUpperCase().indexOf(filter) > -1) {
             $(this).closest('tr').show();
         } else {
@@ -315,7 +317,7 @@ function filterStories() {
 //======================================================================
 function generateModel(modelType, medium_accountname, userId) {
     if (modelType === "post") {
-        var postModel = {
+        let postModel = {
             storyModel: {
                 stories: []
             },
@@ -331,7 +333,7 @@ function generateModel(modelType, medium_accountname, userId) {
         return postModel;
 
     } else if (modelType === "user") {
-        var userModel = {
+        let userModel = {
             followModel: {
                 users: []
             },
@@ -364,9 +366,9 @@ function checkMediumAccountAndFillModel(medium_accountname) {
         url: url,
         dataType: "text",
         type: 'GET',
-        success: function (html, textStatus, errorThrown) {
-            var content = html.substring(16);
-            var jContent = JSON.parse(content);
+        success: (html, textStatus, errorThrown) => {
+            let content = html.substring(16);
+            let jContent = JSON.parse(content);
             if (jContent.success) {
                 if (activeContext === CONTEXT.WriterStories) {
                     const postModel = generateModel("post", medium_accountname, jContent.payload.user.userId);
@@ -383,7 +385,7 @@ function checkMediumAccountAndFillModel(medium_accountname) {
                 //postModel.res.status(200).end();
             }
         },
-        error: function (html, textStatus, errorThrown) {
+        error: (html, textStatus, errorThrown) => {
             console.log(html);
         }
     });
@@ -401,30 +403,30 @@ function findAllMediumPostAndFillModel(postModel) {
         url: url,
         dataType: "text",
         type: 'GET',
-        success: function (html, textStatus, errorThrown) {
+        success: (html, textStatus, errorThrown) => {
 
             let content = html.substring(16);
             let jContent = JSON.parse(content);
             let posts = jContent.payload.references.Post;
             if (jContent.payload.paging.next == undefined) { //Last Paging
-                var accountName = postModel.req.body.medium_accountname;
-                var val = JSON.stringify(postModel);
+                let accountName = postModel.req.body.medium_accountname;
+                let val = JSON.stringify(postModel);
                 writeUserInfo2ChromeStorage(accountName, val);
             } else {
                 postModel.pagingTo = jContent.payload.paging.next.to;
                 console.log(postModel.pagingTo);
-                for (var pKey in posts) {
-                    var pItem = posts[pKey];
-                    var sUrl = "https://medium.com/p/" + pItem.uniqueSlug;
-                    var sTotalClaps = pItem.virtuals.totalClapCount;
+                for (let pKey in posts) {
+                    let pItem = posts[pKey];
+                    let sUrl = "https://medium.com/p/" + pItem.uniqueSlug;
+                    let sTotalClaps = pItem.virtuals.totalClapCount;
 
                     //Publish Date
-                    var d = new Date(parseInt(pItem.latestPublishedAt)); // The 0 there is the key, which sets the date to the epoch
-                    var sPublishedDate = d.toISOString().replace('-', '/').split('T')[0].replace('-', '/');
+                    let d = new Date(parseInt(pItem.latestPublishedAt)); // The 0 there is the key, which sets the date to the epoch
+                    let sPublishedDate = d.toISOString().replace('-', '/').split('T')[0].replace('-', '/');
 
-                    var existStoryIndex = -1;
-                    var stories = postModel.storyModel.stories;
-                    for (var i = 0; i < stories.length; i++) {
+                    let existStoryIndex = -1;
+                    let stories = postModel.storyModel.stories;
+                    for (let i = 0; i < stories.length; i++) {
                         if (stories[i].sUrl === sUrl) {
                             existStoryIndex = i;
                             break;
@@ -440,7 +442,7 @@ function findAllMediumPostAndFillModel(postModel) {
                             sTotalClaps: sTotalClaps,
                         });
                     } else {
-                        var story = stories[existStoryIndex];
+                        let story = stories[existStoryIndex];
                         story.sTitle = pItem.title;
                         story.sUrl = sUrl;
                         story.sPublishedDate = sPublishedDate;
@@ -472,7 +474,7 @@ function findAllMediumUserAndFillModel(userModel, source) {
         url: url,
         dataType: "text",
         type: 'GET',
-        success: function (html, textStatus, errorThrown) {
+        success: (html, textStatus, errorThrown) => {
 
             let content = html.substring(16);
             let jContent = JSON.parse(content);
@@ -528,7 +530,7 @@ function findAllMediumUserAndFillModel(userModel, source) {
 
 
         },
-        error: function (html, textStatus, errorThrown) {
+        error: (html, textStatus, errorThrown) => {
             console.log(jqXHR);
         }
     });
@@ -557,14 +559,14 @@ function isMeStatsExist(accountName, override) {
         data: {
             key: key
         }
-    }, function (resp) {
+    }, resp => {
         const postModel = generateModel("post", accountName, -1);
         if (Object.keys(resp.data).length === 0) {
             findAllMediumPostAndFillStats(postModel, null, true);
         } else {
-            var data = resp.data;
-            var strObj = data[Object.keys(data)[0]];
-            var oldModel = JSON.parse(strObj);
+            let data = resp.data;
+            let strObj = data[Object.keys(data)[0]];
+            let oldModel = JSON.parse(strObj);
             findAllMediumPostAndFillStats(postModel, oldModel, override);
         }
     });
@@ -587,32 +589,30 @@ function findAllMediumPostAndFillStats(postModel, oldModel, override) {
         url: url,
         dataType: "text",
         type: 'GET',
-        success: function (html, textStatus, errorThrown) {
+        success: (html, textStatus, errorThrown) => {
 
             let content = html.substring(16);
             let jContent = JSON.parse(content);
             let posts = jContent.payload.value;
             if (jContent.payload.paging.next == undefined) { //Last Paging
-                var accountName = postModel.req.body.medium_accountname;
-                var val = JSON.stringify(postModel);
-                if (oldModel !== null) {
-                    calculateDiffAndRender(postModel, oldModel)
-                }
+                let accountName = postModel.req.body.medium_accountname;
+                let val = JSON.stringify(postModel);
+                calculateDiffAndRender(postModel, oldModel === null ? postModel : oldModel);
+                
                 if (override) {
                     writeUserInfo2ChromeStorage(accountName, val);
                 }
             } else {
                 postModel.pagingTo = jContent.payload.paging.next.to;
                 let stories = postModel.storyModel.stories;
-                postModel.storyModel.stories = stories = stories.concat(posts);
-                //console.log("Stories Count:" + postModel.storyModel.stories.length);
+                postModel.storyModel.stories = stories.concat(posts);
                 renderLoadingProgress(postModel.storyModel.stories.length);
                 findAllMediumPostAndFillStats(postModel, oldModel, override);
             }
 
 
         },
-        error: function (html, textStatus, errorThrown) {
+        error: (html, textStatus, errorThrown) => {
             console.log(jqXHR);
         }
     });
@@ -649,7 +649,7 @@ function calculateDiffAndRender(postModel, oldModel) {
         storiesDiffArr.push(storyDiffObj);
     }
 
-    storiesDiffArr.sort(function (a, b) {
+    storiesDiffArr.sort((a, b) => {
         return b.sDiff - a.sDiff;
     });
 
