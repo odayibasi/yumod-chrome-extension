@@ -1,6 +1,6 @@
 #Yumod Chrome Extension
 
-A [Chrome Extension]( [extension](https://chrome.google.com/webstore/detail/yumod/kpjkbgdonednmekjdoemegjnlflnfgkd)) for Medium: (Medium Writer’s Stories)
+A [Chrome Extension]([extension](https://chrome.google.com/webstore/detail/yumod/kpjkbgdonednmekjdoemegjnlflnfgkd)) for Medium: (Medium Writer’s Stories)
 
 ![Yumod Main](http://onurdayibasi.com.s3-website-eu-west-1.amazonaws.com/yumod/chrome_extension/images/main.png "Yumod Main")
 
