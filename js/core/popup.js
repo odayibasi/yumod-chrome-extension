@@ -597,8 +597,9 @@ function findAllMediumPostAndFillStats(postModel, oldModel, override) {
             if (jContent.payload.paging.next == undefined) { //Last Paging
                 let accountName = postModel.req.body.medium_accountname;
                 let val = JSON.stringify(postModel);
+                console.log(JSON.stringify(postModel.storyModel.stories));
                 calculateDiffAndRender(postModel, oldModel === null ? postModel : oldModel);
-                
+
                 if (override) {
                     writeUserInfo2ChromeStorage(accountName, val);
                 }
