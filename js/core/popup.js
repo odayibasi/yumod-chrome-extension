@@ -301,7 +301,7 @@ function renderError() {
 //======================================================================
 function filterStories() {
     let filter = $("#txtSearchStory").val().toUpperCase();
-    $(".listItem").each(el => {
+    $(".listItem").each(function(){
         if ($(this).text().toUpperCase().indexOf(filter) > -1) {
             $(this).closest('tr').show();
         } else {
