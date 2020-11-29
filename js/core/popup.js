@@ -125,8 +125,22 @@ function getUser(jContent) {
 }
 
 
+//======================================================================
+// This function check URL to find Account
+//======================================================================
+
 function checkURLToFindAccountName(url, forceReload) {
 
+    //Check From URL Maybe "odayibasi.medium.com"
+    const urlObj = new URL(url);
+    const hostName = urlObj.hostname;
+    if (hostName.includes('.medium.com')) {
+        const userName = hostName.replace('.medium.com', '');
+        url = "https://medium.com/@" + userName;
+    }
+
+
+    //Check From Story
     let errMsg = "This page is not medium.com story";
     let urlJSON = url + "?format=json";
     $.ajax({
@@ -301,7 +315,7 @@ function renderError() {
 //======================================================================
 function filterStories() {
     let filter = $("#txtSearchStory").val().toUpperCase();
-    $(".listItem").each(function(){
+    $(".listItem").each(function () {
         if ($(this).text().toUpperCase().indexOf(filter) > -1) {
             $(this).closest('tr').show();
         } else {
@@ -575,14 +589,15 @@ function isMeStatsExist(accountName, override) {
 
 
 //============================================================================================
-//https://medium.com/@{username}/stats?filter=not-response
+//https://medium.com/@{username}/stats?filter=not-response]
+//This method needs authentication...
 //==============================================================================================
 function findAllMediumPostAndFillStats(postModel, oldModel, override) {
 
     let pagingTo = postModel.pagingTo != undefined ? "&to=" + postModel.pagingTo : "";
-    let urlTemp = "https://medium.com/@odayibasi/stats?limit=25$pagingTo&filter=not-response&bucketType=MONTH&format=json";
+    let urlTemp = "https://medium.com/@$accountName/stats?limit=25$pagingTo&filter=not-response&bucketType=MONTH&format=json";
     if (pagingTo === "") {
-        urlTemp = "https://medium.com/@odayibasi/stats?filter=not-response&format=json";
+        urlTemp = "https://medium.com/@$accountName/stats?filter=not-response&format=json";
     }
     let url = urlTemp.replace("$accountName", postModel.req.body.medium_accountname).replace("$pagingTo", pagingTo);
     $.ajax({
