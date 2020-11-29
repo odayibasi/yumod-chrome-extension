@@ -3,7 +3,7 @@
     "version": "1.1.2",
     "description": "Get Medium Writer's Stories and Stats",
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
-    "permissions": ["activeTab", "declarativeContent", "storage", "tabs", "https://*/*"],
+    "permissions": ["activeTab", "storage", "tabs", "https://*/*"],
     "background": {
         "scripts": ["js/core/background.js"],
         "persistent": false

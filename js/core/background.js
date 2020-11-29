@@ -1,26 +1,3 @@
-chrome.runtime.onInstalled.addListener(function() {
-
-    // it is removed because some pages below own hostings..
-    //       -- https://hackernoon.com/
-    //       -- https://towardsdatascience.com/
-    //       
-
-    // chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    //     chrome.declarativeContent.onPageChanged.addRules([{
-    //         conditions: [
-    //             new chrome.declarativeContent.PageStateMatcher({
-    //                 css: { hostEquals: 'medium.com' },
-    //             })
-    //         ],
-    //         actions: [new chrome.declarativeContent.ShowPageAction()]
-    //     }]);
-    // });
-
-
-});
-
-
-
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message.op === 'persistWriterInfo') {
         var key = message.data.key + "";
