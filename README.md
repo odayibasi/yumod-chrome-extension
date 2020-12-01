@@ -2,7 +2,7 @@
 
 A [Chrome Extension](https://chrome.google.com/webstore/detail/yumod/kpjkbgdonednmekjdoemegjnlflnfgkd) for Medium: (Medium Writer’s Stories)
 
-![Yumod Main](http://onurdayibasi.com.s3-website-eu-west-1.amazonaws.com/yumod/chrome_extension/images/main.png "Yumod Main")
+![Yumod Main](http://onurdayibasi.com.s3-website-eu-west-1.amazonaws.com/onurdayibasi.com/medium/yumod/chrome_extension/images/main.png "Yumod Main")
 
 
 Me as a person using Medium a lot, one of the biggest problem while reading a story of an author is that I am not able to access other stories written by the author quickly.
